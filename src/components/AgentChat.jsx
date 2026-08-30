@@ -17,7 +17,7 @@ const QUICK_PROMPTS = [
 
 const COLORS = ['#06b6d4', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
-export default function AgentChat({ datasets }) {
+export default function AgentChat({ datasets, theme }) {
   const [messages, setMessages] = useState([
     {
       id: 'welcome',
@@ -55,6 +55,8 @@ Select any quick query prompt above or ask your custom business question below.`
   const [openGraphQLId, setOpenGraphQLId] = useState(null);
   const chatBottomRef = useRef(null);
 
+  const isLight = theme === 'light';
+
   useEffect(() => {
     chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isProcessing]);
@@ -89,32 +91,42 @@ Select any quick query prompt above or ask your custom business question below.`
     <div className="flex flex-col h-[calc(100vh-5.5rem)] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
       
       {/* Top Banner Quick Prompts */}
-      <div className="mb-4 bg-[#0b0f19]/90 backdrop-blur-xl border border-slate-800/90 p-4 rounded-2xl shadow-xl ring-1 ring-white/5">
-        <div className="flex items-center justify-between mb-2.5">
-          <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-cyan-400 animate-pulse" />
+      <div className={`mb-4 border p-4.5 rounded-2xl shadow-xl backdrop-blur-xl transition-colors ${
+        isLight ? 'bg-white/90 border-slate-200 shadow-slate-200/50' : 'bg-slate-900/90 border-slate-800 shadow-black/40'
+      }`}>
+        <div className="flex items-center justify-between mb-3">
+          <span className={`text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 ${
+            isLight ? 'text-slate-700' : 'text-slate-300'
+          }`}>
+            <Sparkles className="h-4 w-4 text-cyan-500 animate-pulse" />
             Founder Quick Intelligence Prompts
           </span>
-          <span className="text-[11px] text-slate-400 font-medium hidden sm:inline">
+          <span className={`text-[11px] font-medium hidden sm:inline ${
+            isLight ? 'text-slate-500' : 'text-slate-400'
+          }`}>
             Cross-board Monday.com GraphQL Query Engine
           </span>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2.5">
           {QUICK_PROMPTS.map((p, idx) => (
             <button
               key={idx}
               onClick={() => handleSend(p.query)}
-              className="text-xs px-3 py-1.5 rounded-xl bg-slate-900/80 text-slate-200 border border-slate-800 hover:border-cyan-500/50 hover:text-cyan-300 hover:bg-slate-850 transition-all duration-200 font-medium flex items-center gap-1.5 shadow-sm active:scale-95"
+              className={`whitespace-nowrap text-xs px-3.5 py-2 rounded-xl border transition-all duration-200 font-semibold flex items-center gap-2 shadow-sm active:scale-95 ${
+                isLight 
+                  ? 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-cyan-50 hover:border-cyan-400 hover:text-cyan-800' 
+                  : 'bg-slate-800/90 text-slate-200 border-slate-700 hover:border-cyan-400 hover:text-cyan-300 hover:bg-slate-800'
+              }`}
             >
               <span>{p.label}</span>
-              <CornerDownRight className="h-3 w-3 opacity-60 text-cyan-400" />
+              <CornerDownRight className="h-3 w-3 opacity-60 text-cyan-400 shrink-0" />
             </button>
           ))}
         </div>
       </div>
 
       {/* Chat Messages Log */}
-      <div className="flex-1 overflow-y-auto space-y-6 pr-2 mb-4 scrollbar-thin scrollbar-thumb-slate-800">
+      <div className="flex-1 overflow-y-auto space-y-6 pr-2 mb-4 scrollbar-thin">
         {messages.map((msg) => (
           <div key={msg.id} className={`flex gap-3.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
             
@@ -127,7 +139,9 @@ Select any quick query prompt above or ask your custom business question below.`
             <div className={`max-w-4xl rounded-2xl p-6 shadow-2xl border transition-all ${
               msg.sender === 'user'
                 ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white border-blue-400/40 rounded-br-none'
-                : 'bg-[#0b0f19]/95 text-slate-100 border-slate-800/90 rounded-bl-none ring-1 ring-white/5'
+                : isLight
+                ? 'bg-white text-slate-900 border-slate-200 rounded-bl-none shadow-slate-200/50'
+                : 'bg-slate-900/95 text-slate-100 border-slate-800 rounded-bl-none ring-1 ring-white/5'
             }`}>
 
               {msg.sender === 'user' ? (
@@ -136,12 +150,16 @@ Select any quick query prompt above or ask your custom business question below.`
                 <div className="space-y-4">
                   
                   {/* Source Tags */}
-                  <div className="flex items-center justify-between text-xs border-b border-slate-800/80 pb-3">
-                    <span className="text-cyan-400 font-bold flex items-center gap-2">
-                      <Database className="h-4 w-4 text-cyan-400" />
+                  <div className={`flex items-center justify-between text-xs border-b pb-3 ${
+                    isLight ? 'border-slate-200' : 'border-slate-800'
+                  }`}>
+                    <span className="text-cyan-500 font-bold flex items-center gap-2">
+                      <Database className="h-4 w-4 text-cyan-500" />
                       Intent Solver: {msg.queryIntent || 'General Intelligence'}
                     </span>
-                    <span className="text-slate-400 text-xs font-medium hidden sm:inline">
+                    <span className={`text-xs font-medium hidden sm:inline ${
+                      isLight ? 'text-slate-500' : 'text-slate-400'
+                    }`}>
                       Querying Deals & Work Orders Boards
                     </span>
                   </div>
@@ -150,10 +168,12 @@ Select any quick query prompt above or ask your custom business question below.`
                   {msg.kpis && msg.kpis.length > 0 && (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 my-4">
                       {msg.kpis.map((kpi, kIdx) => (
-                        <div key={kIdx} className="bg-[#030712]/90 p-4 rounded-xl border border-slate-800 shadow-inner">
-                          <p className="text-xs text-slate-400 font-medium">{kpi.label}</p>
-                          <p className="text-xl font-extrabold text-white mt-1 tracking-tight font-display">{kpi.value}</p>
-                          <p className="text-[11px] text-cyan-400 font-medium mt-0.5">{kpi.sub}</p>
+                        <div key={kIdx} className={`p-4 rounded-xl border shadow-inner ${
+                          isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/90 border-slate-800'
+                        }`}>
+                          <p className={`text-xs font-medium ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>{kpi.label}</p>
+                          <p className={`text-xl font-extrabold mt-1 tracking-tight font-heading ${isLight ? 'text-slate-900' : 'text-white'}`}>{kpi.value}</p>
+                          <p className="text-[11px] text-cyan-500 font-semibold mt-0.5">{kpi.sub}</p>
                         </div>
                       ))}
                     </div>
@@ -164,10 +184,14 @@ Select any quick query prompt above or ask your custom business question below.`
 
                   {/* Embedded Chart Graphic */}
                   {msg.chartData && msg.chartData.length > 0 && (
-                    <div className="bg-[#030712]/90 p-5 rounded-xl border border-slate-800 mt-4 shadow-inner">
+                    <div className={`p-5 rounded-xl border mt-4 shadow-inner ${
+                      isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/90 border-slate-800'
+                    }`}>
                       <div className="flex items-center justify-between mb-3">
-                        <p className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
-                          <BarChart2 className="h-4 w-4 text-cyan-400" />
+                        <p className={`text-xs font-bold uppercase tracking-wider flex items-center gap-2 ${
+                          isLight ? 'text-slate-700' : 'text-slate-300'
+                        }`}>
+                          <BarChart2 className="h-4 w-4 text-cyan-500" />
                           Visual Breakdown: {msg.queryIntent}
                         </p>
                       </div>
@@ -189,14 +213,14 @@ Select any quick query prompt above or ask your custom business question below.`
                                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                               </Pie>
-                              <Tooltip contentStyle={{ backgroundColor: '#0b0f19', borderColor: '#334155', borderRadius: '12px', color: '#fff' }} />
+                              <Tooltip contentStyle={{ backgroundColor: isLight ? '#fff' : '#0f172a', borderColor: isLight ? '#cbd5e1' : '#334155', borderRadius: '12px', color: isLight ? '#0f172a' : '#fff' }} />
                             </PieChart>
                           ) : (
                             <BarChart data={msg.chartData}>
-                              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                              <XAxis dataKey={msg.chartData[0].quarter ? 'quarter' : msg.chartData[0].sector ? 'sector' : msg.chartData[0].owner ? 'owner' : 'stage'} stroke="#64748b" fontSize={11} />
-                              <YAxis stroke="#64748b" fontSize={11} />
-                              <Tooltip contentStyle={{ backgroundColor: '#0b0f19', borderColor: '#334155', borderRadius: '12px', color: '#fff' }} />
+                              <CartesianGrid strokeDasharray="3 3" stroke={isLight ? '#e2e8f0' : '#1e293b'} />
+                              <XAxis dataKey={msg.chartData[0].quarter ? 'quarter' : msg.chartData[0].sector ? 'sector' : msg.chartData[0].owner ? 'owner' : 'stage'} stroke={isLight ? '#64748b' : '#94a3b8'} fontSize={11} />
+                              <YAxis stroke={isLight ? '#64748b' : '#94a3b8'} fontSize={11} />
+                              <Tooltip contentStyle={{ backgroundColor: isLight ? '#fff' : '#0f172a', borderColor: isLight ? '#cbd5e1' : '#334155', borderRadius: '12px', color: isLight ? '#0f172a' : '#fff' }} />
                               {msg.chartKeys && msg.chartKeys.map((ck, cIdx) => (
                                 <Bar key={cIdx} dataKey={ck.key} name={ck.name} fill={ck.color} radius={[6, 6, 0, 0]} />
                               ))}
@@ -209,11 +233,11 @@ Select any quick query prompt above or ask your custom business question below.`
 
                   {/* Data Resilience & Quality Caveat Warning */}
                   {msg.caveats && msg.caveats.length > 0 && (
-                    <div className="bg-amber-950/20 border border-amber-500/30 p-3.5 rounded-xl text-xs text-amber-300 flex items-start gap-2.5 mt-3">
-                      <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
+                    <div className="bg-amber-950/20 border border-amber-500/30 p-3.5 rounded-xl text-xs text-amber-500 flex items-start gap-2.5 mt-3">
+                      <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
                       <div>
-                        <span className="font-semibold text-amber-300">Data Resilience & Quality Caveats:</span>
-                        <ul className="list-disc list-inside mt-1 space-y-0.5 text-amber-200/80">
+                        <span className="font-semibold text-amber-500">Data Resilience & Quality Caveats:</span>
+                        <ul className="list-disc list-inside mt-1 space-y-0.5 text-amber-600 dark:text-amber-300">
                           {msg.caveats.map((c, cIdx) => (
                             <li key={cIdx}>{c}</li>
                           ))}
@@ -224,10 +248,10 @@ Select any quick query prompt above or ask your custom business question below.`
 
                   {/* GraphQL Query Inspector Toggle */}
                   {msg.mondayGraphQLQuery && (
-                    <div className="pt-2.5 border-t border-slate-800/80">
+                    <div className={`pt-2.5 border-t ${isLight ? 'border-slate-200' : 'border-slate-800'}`}>
                       <button
                         onClick={() => setOpenGraphQLId(openGraphQLId === msg.id ? null : msg.id)}
-                        className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 flex items-center gap-1.5 transition"
+                        className="text-xs font-bold text-cyan-500 hover:text-cyan-600 flex items-center gap-1.5 transition"
                       >
                         <Code className="h-3.5 w-3.5" />
                         <span>{openGraphQLId === msg.id ? 'Hide GraphQL Query' : 'Inspect Monday.com GraphQL v2 Query'}</span>
@@ -235,7 +259,9 @@ Select any quick query prompt above or ask your custom business question below.`
                       </button>
 
                       {openGraphQLId === msg.id && (
-                        <div className="mt-2.5 bg-[#030712] p-3.5 rounded-xl border border-slate-800 text-xs font-mono text-cyan-300 overflow-x-auto shadow-inner">
+                        <div className={`mt-2.5 p-3.5 rounded-xl border text-xs font-mono overflow-x-auto shadow-inner ${
+                          isLight ? 'bg-slate-900 text-cyan-300 border-slate-800' : 'bg-slate-950 text-cyan-300 border-slate-800'
+                        }`}>
                           <pre className="text-xs leading-relaxed">{msg.mondayGraphQLQuery}</pre>
                         </div>
                       )}
@@ -244,9 +270,9 @@ Select any quick query prompt above or ask your custom business question below.`
 
                   {/* Suggested Follow-ups */}
                   {msg.followUps && (
-                    <div className="pt-2.5 border-t border-slate-800/80">
-                      <p className="text-xs text-slate-400 mb-2 flex items-center gap-1.5">
-                        <HelpCircle className="h-3.5 w-3.5 text-cyan-400" />
+                    <div className={`pt-2.5 border-t ${isLight ? 'border-slate-200' : 'border-slate-800'}`}>
+                      <p className={`text-xs mb-2 flex items-center gap-1.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+                        <HelpCircle className="h-3.5 w-3.5 text-cyan-500" />
                         Suggested Follow-Up Questions:
                       </p>
                       <div className="flex flex-wrap gap-2">
@@ -254,7 +280,11 @@ Select any quick query prompt above or ask your custom business question below.`
                           <button
                             key={fIdx}
                             onClick={() => handleSend(fu)}
-                            className="text-xs px-3 py-1.5 rounded-xl bg-slate-900 text-cyan-300 hover:bg-cyan-950 hover:text-cyan-200 border border-slate-800 transition shadow-sm font-medium"
+                            className={`whitespace-nowrap text-xs px-3.5 py-1.5 rounded-xl border transition shadow-sm font-semibold ${
+                              isLight
+                                ? 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-cyan-50 hover:border-cyan-400'
+                                : 'bg-slate-800 text-cyan-300 border-slate-700 hover:bg-cyan-950'
+                            }`}
                           >
                             {fu}
                           </button>
@@ -282,9 +312,11 @@ Select any quick query prompt above or ask your custom business question below.`
             <div className="h-10 w-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shrink-0 animate-pulse">
               <Bot className="h-5 w-5" />
             </div>
-            <div className="bg-[#0b0f19]/90 border border-slate-800/90 rounded-2xl p-4 text-slate-300 text-xs flex items-center space-x-3 shadow-xl">
-              <span className="h-2.5 w-2.5 rounded-full bg-cyan-400 animate-ping"></span>
-              <span className="font-semibold text-cyan-300">Querying Monday.com GraphQL API & correlating boards...</span>
+            <div className={`border rounded-2xl p-4 text-xs flex items-center space-x-3 shadow-xl ${
+              isLight ? 'bg-white border-slate-200 text-slate-700' : 'bg-slate-900 border-slate-800 text-slate-300'
+            }`}>
+              <span className="h-2.5 w-2.5 rounded-full bg-cyan-500 animate-ping"></span>
+              <span className="font-semibold text-cyan-500">Querying Monday.com GraphQL API & correlating boards...</span>
             </div>
           </div>
         )}
@@ -293,20 +325,26 @@ Select any quick query prompt above or ask your custom business question below.`
       </div>
 
       {/* Query Input Box */}
-      <div className="bg-[#0b0f19]/95 border border-slate-800/90 p-3 rounded-2xl shadow-2xl backdrop-blur-xl ring-1 ring-white/5">
+      <div className={`border p-3 rounded-2xl shadow-2xl backdrop-blur-xl transition-colors ${
+        isLight ? 'bg-white/95 border-slate-200 shadow-slate-200/50' : 'bg-slate-900/95 border-slate-800'
+      }`}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleSend();
           }}
-          className="flex items-center space-x-2.5"
+          className="flex items-center space-x-3"
         >
           <input
             type="text"
             value={inputQuery}
             onChange={(e) => setInputQuery(e.target.value)}
             placeholder="Ask any founder query e.g. 'How is our energy pipeline looking this quarter?'..."
-            className="flex-1 bg-[#030712] text-white placeholder-slate-500 text-xs sm:text-sm px-4 py-3.5 rounded-xl border border-slate-800 focus:outline-none focus:border-cyan-500 font-medium"
+            className={`flex-1 text-xs sm:text-sm px-4 py-3.5 rounded-xl border focus:outline-none focus:border-cyan-500 font-medium ${
+              isLight 
+                ? 'bg-slate-50 text-slate-900 placeholder-slate-400 border-slate-200' 
+                : 'bg-slate-950 text-white placeholder-slate-500 border-slate-800'
+            }`}
           />
           <button
             type="submit"

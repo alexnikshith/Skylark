@@ -1,53 +1,77 @@
-/* Global Glassmorphism & Modern Design Tokens */
-@layer utilities {
-  .glass-panel {
-    background: rgba(11, 15, 25, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-  
-  .glass-card {
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .glass-card:hover {
-    border-color: rgba(6, 182, 212, 0.3);
-    box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.15);
-  }
+/* Multi-Theme Design System & Micro-Animations */
 
-  .glow-cyan {
-    box-shadow: 0 0 20px -3px rgba(6, 182, 212, 0.35);
-  }
-
-  .glow-blue {
-    box-shadow: 0 0 20px -3px rgba(37, 99, 235, 0.35);
-  }
+/* Theme 1: Titanium Slate & Indigo Glass (Default) */
+.theme-slate {
+  --bg-main: #0b0f19;
+  --bg-card: rgba(15, 23, 42, 0.75);
+  --border-card: rgba(255, 255, 255, 0.1);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent-blue: #3b82f6;
+  --accent-cyan: #06b6d4;
 }
 
-/* Custom Scrollbars */
+/* Theme 2: Cyber Obsidian */
+.theme-dark {
+  --bg-main: #030712;
+  --bg-card: rgba(17, 24, 39, 0.85);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --text-main: #f9fafb;
+  --text-muted: #9ca3af;
+  --accent-blue: #2563eb;
+  --accent-cyan: #22d3ee;
+}
+
+/* Theme 3: Executive Light Mode */
+.theme-light {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --border-card: #e2e8f0;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --accent-blue: #2563eb;
+  --accent-cyan: #0284c7;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+.font-heading {
+  font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+/* Glassmorphism Panel Utilities */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
+  border-radius: 1rem;
+}
+
+.glass-pill {
+  white-space: nowrap;
+  display: inline-flex;
+  items-center: center;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Scrollbar Customization */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #030712;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: rgba(148, 163, 184, 0.2);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
-}
-
-body {
-  margin: 0;
-  background-color: #030712;
-  color: #f8fafc;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  overflow-x: hidden;
+  background: rgba(148, 163, 184, 0.4);
 }
