@@ -15,7 +15,7 @@ const QUICK_PROMPTS = [
   { label: "🛡️ Data Quality Audit", query: "Audit data quality and flag missing fields or caveats" }
 ];
 
-const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899'];
+const COLORS = ['#06b6d4', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
 export default function AgentChat({ datasets }) {
   const [messages, setMessages] = useState([
@@ -23,7 +23,7 @@ export default function AgentChat({ datasets }) {
       id: 'welcome',
       sender: 'agent',
       intent: 'Welcome & Board Initialization',
-      answerMarkdown: `### 👋 Welcome, Founder!
+      answerMarkdown: `### ⚡ Welcome to Skylark Monday.com BI Console
 
 I am your **Monday.com Business Intelligence Agent**. I continuously query, clean, and correlate real-time data across your **Deal Funnel** (${datasets.deals.length} deals) and **Work Order Tracker** (${datasets.workOrders.length} work orders) boards.
 
@@ -32,7 +32,7 @@ I am your **Monday.com Business Intelligence Agent**. I continuously query, clea
 - **Total Ingested Work Orders**: **175 active projects** with billing & collection tracking.
 - **Data Resilience Status**: Inconsistent date formats normalized, sector taxonomies aligned, and status typos auto-corrected.
 
-Select any quick query pill above or ask your custom business question below.`,
+Select any quick query prompt above or ask your custom business question below.`,
       kpis: [
         { label: 'Ingested Deals', value: String(datasets.deals.length), sub: 'Sales Pipeline' },
         { label: 'Ingested Work Orders', value: String(datasets.workOrders.length), sub: 'Operational Execution' },
@@ -86,17 +86,17 @@ Select any quick query pill above or ask your custom business question below.`,
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4.2rem)] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+    <div className="flex flex-col h-[calc(100vh-5.5rem)] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
       
       {/* Top Banner Quick Prompts */}
-      <div className="mb-4 bg-slate-900/90 backdrop-blur-xl border border-slate-800 p-4 rounded-2xl shadow-lg ring-1 ring-white/5">
+      <div className="mb-4 bg-[#0b0f19]/90 backdrop-blur-xl border border-slate-800/90 p-4 rounded-2xl shadow-xl ring-1 ring-white/5">
         <div className="flex items-center justify-between mb-2.5">
-          <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+          <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-cyan-400 animate-pulse" />
             Founder Quick Intelligence Prompts
           </span>
-          <span className="text-[11px] text-slate-500 font-medium hidden sm:inline">
-            Querying api.monday.com/v2 boards
+          <span className="text-[11px] text-slate-400 font-medium hidden sm:inline">
+            Cross-board Monday.com GraphQL Query Engine
           </span>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -104,30 +104,30 @@ Select any quick query pill above or ask your custom business question below.`,
             <button
               key={idx}
               onClick={() => handleSend(p.query)}
-              className="text-xs px-3 py-1.5 rounded-xl bg-slate-800/80 text-slate-200 border border-slate-700/80 hover:border-cyan-500 hover:text-cyan-300 hover:bg-slate-800 transition-all font-medium flex items-center gap-1.5 shadow-sm active:scale-95"
+              className="text-xs px-3 py-1.5 rounded-xl bg-slate-900/80 text-slate-200 border border-slate-800 hover:border-cyan-500/50 hover:text-cyan-300 hover:bg-slate-850 transition-all duration-200 font-medium flex items-center gap-1.5 shadow-sm active:scale-95"
             >
               <span>{p.label}</span>
-              <CornerDownRight className="h-3 w-3 opacity-60" />
+              <CornerDownRight className="h-3 w-3 opacity-60 text-cyan-400" />
             </button>
           ))}
         </div>
       </div>
 
       {/* Chat Messages Log */}
-      <div className="flex-1 overflow-y-auto space-y-5 pr-2 mb-4 scrollbar-thin scrollbar-thumb-slate-800">
+      <div className="flex-1 overflow-y-auto space-y-6 pr-2 mb-4 scrollbar-thin scrollbar-thumb-slate-800">
         {messages.map((msg) => (
-          <div key={msg.id} className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+          <div key={msg.id} className={`flex gap-3.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
             
             {msg.sender === 'agent' && (
-              <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 flex items-center justify-center text-white shrink-0 shadow-lg shadow-cyan-500/20 ring-1 ring-white/20 mt-1">
+              <div className="h-10 w-10 rounded-2xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 flex items-center justify-center text-white shrink-0 shadow-lg shadow-cyan-500/20 ring-1 ring-white/20 mt-1">
                 <Bot className="h-5 w-5" />
               </div>
             )}
 
-            <div className={`max-w-4xl rounded-2xl p-5 shadow-xl border transition-all ${
+            <div className={`max-w-4xl rounded-2xl p-6 shadow-2xl border transition-all ${
               msg.sender === 'user'
                 ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white border-blue-400/40 rounded-br-none'
-                : 'bg-slate-900/95 text-slate-100 border-slate-800/90 rounded-bl-none ring-1 ring-white/5'
+                : 'bg-[#0b0f19]/95 text-slate-100 border-slate-800/90 rounded-bl-none ring-1 ring-white/5'
             }`}>
 
               {msg.sender === 'user' ? (
@@ -136,24 +136,24 @@ Select any quick query pill above or ask your custom business question below.`,
                 <div className="space-y-4">
                   
                   {/* Source Tags */}
-                  <div className="flex items-center justify-between text-xs border-b border-slate-800 pb-2.5">
-                    <span className="text-cyan-400 font-bold flex items-center gap-1.5">
-                      <Database className="h-3.5 w-3.5 text-cyan-400" />
+                  <div className="flex items-center justify-between text-xs border-b border-slate-800/80 pb-3">
+                    <span className="text-cyan-400 font-bold flex items-center gap-2">
+                      <Database className="h-4 w-4 text-cyan-400" />
                       Intent Solver: {msg.queryIntent || 'General Intelligence'}
                     </span>
-                    <span className="text-slate-400 text-[11px] font-medium hidden sm:inline">
-                      Monday.com Deals & Work Orders Boards
+                    <span className="text-slate-400 text-xs font-medium hidden sm:inline">
+                      Querying Deals & Work Orders Boards
                     </span>
                   </div>
 
                   {/* KPI Summary Grid */}
                   {msg.kpis && msg.kpis.length > 0 && (
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 my-3">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 my-4">
                       {msg.kpis.map((kpi, kIdx) => (
-                        <div key={kIdx} className="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800/80 shadow-inner">
-                          <p className="text-[11px] text-slate-400 font-medium">{kpi.label}</p>
-                          <p className="text-lg font-extrabold text-white mt-0.5 tracking-tight">{kpi.value}</p>
-                          <p className="text-[10px] text-cyan-400/90 mt-0.5 font-medium">{kpi.sub}</p>
+                        <div key={kIdx} className="bg-[#030712]/90 p-4 rounded-xl border border-slate-800 shadow-inner">
+                          <p className="text-xs text-slate-400 font-medium">{kpi.label}</p>
+                          <p className="text-xl font-extrabold text-white mt-1 tracking-tight font-display">{kpi.value}</p>
+                          <p className="text-[11px] text-cyan-400 font-medium mt-0.5">{kpi.sub}</p>
                         </div>
                       ))}
                     </div>
@@ -164,14 +164,14 @@ Select any quick query pill above or ask your custom business question below.`,
 
                   {/* Embedded Chart Graphic */}
                   {msg.chartData && msg.chartData.length > 0 && (
-                    <div className="bg-slate-950/90 p-4 rounded-xl border border-slate-800 mt-4 shadow-inner">
+                    <div className="bg-[#030712]/90 p-5 rounded-xl border border-slate-800 mt-4 shadow-inner">
                       <div className="flex items-center justify-between mb-3">
-                        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                          <BarChart2 className="h-3.5 w-3.5 text-cyan-400" />
+                        <p className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                          <BarChart2 className="h-4 w-4 text-cyan-400" />
                           Visual Breakdown: {msg.queryIntent}
                         </p>
                       </div>
-                      <div className="h-56 w-full">
+                      <div className="h-60 w-full">
                         <ResponsiveContainer width="100%" height="100%">
                           {msg.chartType === 'pie' ? (
                             <PieChart>
@@ -181,7 +181,7 @@ Select any quick query pill above or ask your custom business question below.`,
                                 nameKey="name"
                                 cx="50%"
                                 cy="50%"
-                                outerRadius={80}
+                                outerRadius={85}
                                 fill="#8884d8"
                                 label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
                               >
@@ -189,16 +189,16 @@ Select any quick query pill above or ask your custom business question below.`,
                                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                               </Pie>
-                              <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', color: '#fff' }} />
+                              <Tooltip contentStyle={{ backgroundColor: '#0b0f19', borderColor: '#334155', borderRadius: '12px', color: '#fff' }} />
                             </PieChart>
                           ) : (
                             <BarChart data={msg.chartData}>
                               <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
                               <XAxis dataKey={msg.chartData[0].quarter ? 'quarter' : msg.chartData[0].sector ? 'sector' : msg.chartData[0].owner ? 'owner' : 'stage'} stroke="#64748b" fontSize={11} />
                               <YAxis stroke="#64748b" fontSize={11} />
-                              <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', color: '#fff' }} />
+                              <Tooltip contentStyle={{ backgroundColor: '#0b0f19', borderColor: '#334155', borderRadius: '12px', color: '#fff' }} />
                               {msg.chartKeys && msg.chartKeys.map((ck, cIdx) => (
-                                <Bar key={cIdx} dataKey={ck.key} name={ck.name} fill={ck.color} radius={[4, 4, 0, 0]} />
+                                <Bar key={cIdx} dataKey={ck.key} name={ck.name} fill={ck.color} radius={[6, 6, 0, 0]} />
                               ))}
                             </BarChart>
                           )}
@@ -209,7 +209,7 @@ Select any quick query pill above or ask your custom business question below.`,
 
                   {/* Data Resilience & Quality Caveat Warning */}
                   {msg.caveats && msg.caveats.length > 0 && (
-                    <div className="bg-amber-950/20 border border-amber-500/30 p-3 rounded-xl text-xs text-amber-300/90 flex items-start gap-2.5 mt-3">
+                    <div className="bg-amber-950/20 border border-amber-500/30 p-3.5 rounded-xl text-xs text-amber-300 flex items-start gap-2.5 mt-3">
                       <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
                       <div>
                         <span className="font-semibold text-amber-300">Data Resilience & Quality Caveats:</span>
@@ -224,19 +224,19 @@ Select any quick query pill above or ask your custom business question below.`,
 
                   {/* GraphQL Query Inspector Toggle */}
                   {msg.mondayGraphQLQuery && (
-                    <div className="pt-2 border-t border-slate-800/80">
+                    <div className="pt-2.5 border-t border-slate-800/80">
                       <button
                         onClick={() => setOpenGraphQLId(openGraphQLId === msg.id ? null : msg.id)}
-                        className="text-[11px] font-semibold text-cyan-400 hover:text-cyan-300 flex items-center gap-1.5 transition"
+                        className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 flex items-center gap-1.5 transition"
                       >
                         <Code className="h-3.5 w-3.5" />
-                        <span>{openGraphQLId === msg.id ? 'Hide GraphQL Query' : 'Inspect Monday.com GraphQL Query'}</span>
+                        <span>{openGraphQLId === msg.id ? 'Hide GraphQL Query' : 'Inspect Monday.com GraphQL v2 Query'}</span>
                         {openGraphQLId === msg.id ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
                       </button>
 
                       {openGraphQLId === msg.id && (
-                        <div className="mt-2 bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs font-mono text-cyan-300 overflow-x-auto">
-                          <pre className="text-[11px] leading-relaxed">{msg.mondayGraphQLQuery}</pre>
+                        <div className="mt-2.5 bg-[#030712] p-3.5 rounded-xl border border-slate-800 text-xs font-mono text-cyan-300 overflow-x-auto shadow-inner">
+                          <pre className="text-xs leading-relaxed">{msg.mondayGraphQLQuery}</pre>
                         </div>
                       )}
                     </div>
@@ -244,17 +244,17 @@ Select any quick query pill above or ask your custom business question below.`,
 
                   {/* Suggested Follow-ups */}
                   {msg.followUps && (
-                    <div className="pt-2 border-t border-slate-800/80">
-                      <p className="text-[11px] text-slate-400 mb-1.5 flex items-center gap-1">
-                        <HelpCircle className="h-3 w-3 text-cyan-400" />
+                    <div className="pt-2.5 border-t border-slate-800/80">
+                      <p className="text-xs text-slate-400 mb-2 flex items-center gap-1.5">
+                        <HelpCircle className="h-3.5 w-3.5 text-cyan-400" />
                         Suggested Follow-Up Questions:
                       </p>
-                      <div className="flex flex-wrap gap-1.5">
+                      <div className="flex flex-wrap gap-2">
                         {msg.followUps.map((fu, fIdx) => (
                           <button
                             key={fIdx}
                             onClick={() => handleSend(fu)}
-                            className="text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-cyan-300 hover:bg-cyan-950 hover:text-cyan-200 border border-slate-700/80 transition shadow-sm font-medium"
+                            className="text-xs px-3 py-1.5 rounded-xl bg-slate-900 text-cyan-300 hover:bg-cyan-950 hover:text-cyan-200 border border-slate-800 transition shadow-sm font-medium"
                           >
                             {fu}
                           </button>
@@ -269,7 +269,7 @@ Select any quick query pill above or ask your custom business question below.`,
             </div>
 
             {msg.sender === 'user' && (
-              <div className="h-9 w-9 rounded-xl bg-slate-700 flex items-center justify-center text-white shrink-0 mt-1 shadow-md">
+              <div className="h-10 w-10 rounded-2xl bg-slate-800 flex items-center justify-center text-white shrink-0 mt-1 shadow-md border border-slate-700">
                 <User className="h-5 w-5" />
               </div>
             )}
@@ -278,12 +278,12 @@ Select any quick query pill above or ask your custom business question below.`,
         ))}
 
         {isProcessing && (
-          <div className="flex gap-3">
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shrink-0 animate-pulse">
+          <div className="flex gap-3.5">
+            <div className="h-10 w-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shrink-0 animate-pulse">
               <Bot className="h-5 w-5" />
             </div>
-            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 text-slate-300 text-xs flex items-center space-x-3 shadow-lg">
-              <span className="h-2 w-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <div className="bg-[#0b0f19]/90 border border-slate-800/90 rounded-2xl p-4 text-slate-300 text-xs flex items-center space-x-3 shadow-xl">
+              <span className="h-2.5 w-2.5 rounded-full bg-cyan-400 animate-ping"></span>
               <span className="font-semibold text-cyan-300">Querying Monday.com GraphQL API & correlating boards...</span>
             </div>
           </div>
@@ -293,28 +293,28 @@ Select any quick query pill above or ask your custom business question below.`,
       </div>
 
       {/* Query Input Box */}
-      <div className="bg-slate-900/95 border border-slate-800 p-2.5 rounded-2xl shadow-2xl backdrop-blur-xl ring-1 ring-white/5">
+      <div className="bg-[#0b0f19]/95 border border-slate-800/90 p-3 rounded-2xl shadow-2xl backdrop-blur-xl ring-1 ring-white/5">
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleSend();
           }}
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-2.5"
         >
           <input
             type="text"
             value={inputQuery}
             onChange={(e) => setInputQuery(e.target.value)}
             placeholder="Ask any founder query e.g. 'How is our energy pipeline looking this quarter?'..."
-            className="flex-1 bg-slate-950 text-white placeholder-slate-500 text-xs px-4 py-3 rounded-xl border border-slate-800 focus:outline-none focus:border-cyan-500 font-medium"
+            className="flex-1 bg-[#030712] text-white placeholder-slate-500 text-xs sm:text-sm px-4 py-3.5 rounded-xl border border-slate-800 focus:outline-none focus:border-cyan-500 font-medium"
           />
           <button
             type="submit"
             disabled={isProcessing || !inputQuery.trim()}
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 disabled:opacity-50 text-white px-5 py-3 rounded-xl font-bold text-xs flex items-center space-x-2 shadow-lg shadow-cyan-500/20 transition-all active:scale-95"
+            className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:opacity-50 text-white px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 shadow-lg shadow-cyan-500/20 transition-all active:scale-95 shrink-0"
           >
             <span>Ask Agent</span>
-            <Send className="h-3.5 w-3.5" />
+            <Send className="h-4 w-4" />
           </button>
         </form>
       </div>
